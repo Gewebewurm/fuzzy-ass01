@@ -40,14 +40,9 @@ public class alpha_cuts {
 		} while (!abort);
 		System.out.println("Stop reading relevant degrees of membership");
 		
-		Collections.sort(levels); //Sort list of levels
-//		
-//		System.out.println("\n Sorted List: ");
-//		for(double level : levels){
-//			System.out.println(level);
-//		}
+		Collections.sort(levels, Collections.reverseOrder()); //Sort list of levels descending
 		
-		//Task b)
+		//Task b) specify alpha_cuts corresponding to levels
 		// data structure as given in the lecture
 		ArrayList<ArrayList<Double[]>> alpha_cuts = new ArrayList<ArrayList<Double[]>>();
 		System.out.println("Now please specify the alpha_cuts for each member.");
@@ -85,16 +80,29 @@ public class alpha_cuts {
 			}
 		}while (!abort);
 		
-		
 		//Task c)
-		//TODO membership degree zurück geben (in extra Funktion auslagern)
-		
-		
-		
-		
-		
+		double x = 0;
+		System.out.print("Please enter x for determining the membership degree of x: ");
+		x = scan.nextDouble();
+		double mueOfX = mue(x, levels, alpha_cuts);
+		System.out.println("bla bla mue(x) = " + mueOfX);
+		System.out.println(x + " has a membership degree of " + mueOfX);
 		
 		scan.close();
+	}
+
+	private static double mue(double x, ArrayList<Double> levels,
+			ArrayList<ArrayList<Double[]>> alpha_cuts) {
+		for (ArrayList<Double[]> alpha_cutPerLevel : alpha_cuts){
+			for (Double[] range : alpha_cutPerLevel){
+				if (x>range[0] && x<range[1]){
+					//found highest alpha_cut for x
+					int index = alpha_cuts.indexOf(alpha_cutPerLevel);
+					return levels.get(index);
+				}
+			}
+		}
+		return 0;
 	}
 
 }
