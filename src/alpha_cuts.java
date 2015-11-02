@@ -95,7 +95,7 @@ public class alpha_cuts {
 			ArrayList<ArrayList<Double[]>> alpha_cuts) {
 		for (ArrayList<Double[]> alpha_cutPerLevel : alpha_cuts){
 			for (Double[] range : alpha_cutPerLevel){
-				if (x>range[0] && x<range[1]){
+				if (x >= range[0] && x <= range[1]){
 					//found highest alpha_cut for x
 					int index = alpha_cuts.indexOf(alpha_cutPerLevel);
 					return levels.get(index);
