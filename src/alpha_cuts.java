@@ -85,7 +85,6 @@ public class alpha_cuts {
 		System.out.print("Please enter x for determining the membership degree of x: ");
 		x = scan.nextDouble();
 		double mueOfX = mue(x, levels, alpha_cuts);
-		System.out.println("bla bla mue(x) = " + mueOfX);
 		System.out.println(x + " has a membership degree of " + mueOfX);
 		
 		scan.close();
