@@ -1,6 +1,11 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * 
+ * @author Jennifer Saalfeld, Norman Guenther
+ *
+ */
 
 public class controller {
 	
