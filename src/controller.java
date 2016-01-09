@@ -27,12 +27,11 @@ public class controller {
 		
 		//Read domain of X and Y
 		System.out.print("Enter domain of X: "); //TODO: Check int
-		int domX = scan.nextInt();
+		xDomain = scan.nextInt();
 		//TODO: Read elements of X to xElements
-		xDomain = domX;
+
 		System.out.print("Enter domain of Y: "); //TODO Check int
-		int domY = scan.nextInt();
-		yDomain = domY;
+		yDomain = scan.nextInt();
 		//TODO: Read elements of Y to yElements
 	}
 	
@@ -117,7 +116,7 @@ public class controller {
 		//Regeln ausgeben
 		showXY();
 		
-		//Task c) compute the greatest solution for each mu_i°rho=v_i
+		//Task c) compute the greatest solution for each mu_iï¿½rho=v_i
 		
 		for(int rule=0;rule<ruleNumber; rule++){
 			calculateRhoBest(rule);
@@ -137,7 +136,7 @@ public class controller {
 		}
 		
 
-		//Task d) output the greatest solution for all mu_i°rho=v_i
+		//Task d) output the greatest solution for all mu_iï¿½rho=v_i
 		
 		calculateRhoBestForAll();
 		
