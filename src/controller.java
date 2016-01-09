@@ -25,12 +25,12 @@ public class controller {
 		
 		//Read domain of X and Y
 		System.out.print("Enter domain of X: "); //TODO: Check int
-		int dom_x = scan.nextInt();
+		int domX = scan.nextInt();
 		//TODO: Read elements of X to xElements
-		xDomain = dom_x;
+		xDomain = domX;
 		System.out.print("Enter domain of Y: "); //TODO Check int
-		int dom_y = scan.nextInt();
-		yDomain = dom_y;
+		int domY = scan.nextInt();
+		yDomain = domY;
 		//TODO: Read elements of Y to yElements
 	}
 	
