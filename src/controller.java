@@ -13,9 +13,11 @@ public class controller {
 	static int y_domain = 0;
 	static int[] x_elements; //TODO: Datentyp
 	static int[] y_elements;
+	static int rules_number;
 	static ArrayList<Double[]> x_rules = new ArrayList<Double[]>();
 	static ArrayList<Double[]> y_rules = new ArrayList<Double[]>();
-	static ArrayList<Double[][]> set_of_rho_best = new ArrayList<Double[][]>();
+	static ArrayList<Double[][]> set_of_each_rho_best = new ArrayList<Double[][]>();
+	static Double[][] rho_best_for_all;
 	static Scanner scan = new Scanner(System.in);
 	
 	public static void read_sets(){
@@ -43,7 +45,7 @@ public class controller {
 		int j = 1;
 		while(j<=x_domain){
 			System.out.print("Enter value for x_" + j + ": "); // passt value? //TODO: x_i durch eingelesene Elemente ersetzen
-			double value_in = scan.nextDouble(); //TODO: check ob zahl, Check 0<=value<=1
+			double value_in = scan.nextDouble(); //TODO: check ob zahl
 			if (value_in>=0 && value_in<=1){
 				x_rule[j-1]=value_in;
 				j++;
@@ -56,7 +58,7 @@ public class controller {
 		int k = 1;
 		while(k<=y_domain){
 			System.out.print("Enter value for y_" + k + ": "); // passt value? //TODO: y_i durch eingelesene Elemente ersetzen
-			double value_in = scan.nextDouble(); //TODO: check ob zahl, Check 0<=value<=1
+			double value_in = scan.nextDouble(); //TODO: check ob zahl
 			if (value_in>=0 && value_in<=1){
 				y_rule[k-1]=value_in;
 				k++;
@@ -67,20 +69,33 @@ public class controller {
 		y_rules.add(y_rule);
 	}
 	
-	public static void calculateRhoBest(int ruleNumber){
+	public static void calculateRhoBest(int rule) {
 		Double[][] rho_best = new Double[x_domain][y_domain];
-		for(int r=0;r<ruleNumber; r++){
-			for(int x=0; x<x_domain; x++){
-				for(int y =0; y<y_domain; y++){
-					if(x_rules.get(r)[x] <= y_rules.get(r)[y]){
-						rho_best[x][y] = 1.0;
-					}else{
-						rho_best[x][y] = y_rules.get(r)[y];
+		for (int x = 0; x < x_domain; x++) {
+			for (int y = 0; y < y_domain; y++) {
+
+				// see slide 42 in chapter 6
+				rho_best[x][y] = Math.min(x_rules.get(rule)[x],y_rules.get(rule)[y]);
+
+			}
+		}
+		set_of_each_rho_best.add(rho_best);
+	}
+	
+	public static void calculateRhoBestForAll() {
+		Double[][] rho_best = new Double[x_domain][y_domain];
+		for (int x = 0; x < x_domain; x++) {
+			for (int y = 0; y < y_domain; y++) {
+				rho_best[x][y] = set_of_each_rho_best.get(0)[x][y];
+				for(int i=1;i<rules_number;i++){
+					if(set_of_each_rho_best.get(i)[x][y] < rho_best[x][y]){
+						rho_best[x][y] = set_of_each_rho_best.get(i)[x][y];
 					}
 				}
 			}
-			set_of_rho_best.add(rho_best);
 		}
+		rho_best_for_all = rho_best;
+		
 	}
 
 	public static void main(String[] args) {
@@ -90,24 +105,28 @@ public class controller {
 		
 		//Task b) enter corresponding fuzzy sets mu_1,...,mu_r on X and v_1,...,v_r on Y
 		
-		System.out.print("Number of Rules: "); //TODO: Check int
-		int rules_number = scan.nextInt();
+		System.out.print("Number of Rules: "); //TODO: Check if int
+		rules_number = scan.nextInt();
 		//TODO: alternativloesung: "weitere regel eingeben? (J/N)"
 		
 		for(int i=1; i<=rules_number; i++){
 			read1rule(i);
 		}
 		
+		//Regeln ausgeben
 		showXY();
 		
 		//Task c) compute the greatest solution for each mu_i°rho=v_i
 		
-		calculateRhoBest(rules_number);
+		for(int rule=0;rule<rules_number; rule++){
+			calculateRhoBest(rule);
+		}
+		
 		
 		System.out.println("\n ----------------- \n");
 		System.out.println("Rho_best:");
 		
-		for(Double[][] rho : set_of_rho_best){
+		for(Double[][] rho : set_of_each_rho_best){
 			for(int i=0; i<x_domain; i++){
 				for(int j=0; j<y_domain; j++){
 					System.out.print(rho[i][j] + "\t");
@@ -119,14 +138,17 @@ public class controller {
 		
 		//Task d) output the greatest solution for all mu_i°rho=v_i
 		
-		//TODO: hier noch some magic -> da muss noch irwas passieren und nur eine matrix ausgegeben werden
+		calculateRhoBestForAll();
+		
+		System.out.println("Rho_best for all is: ");
+		for(int i=0; i<x_domain; i++){
+			for(int j=0; j<y_domain; j++){
+				System.out.print(rho_best_for_all[i][j] + "\t");
+			}
+			System.out.println();
+		}
+	}	
 
-		
-		
-		
-
-	}
-	
 	public static void showXY(){
 		System.out.println("\n ---------------------- \n");
 		System.out.println("X");
